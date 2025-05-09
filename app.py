@@ -9,11 +9,38 @@ from urllib.parse import urlparse
 app = Flask(__name__)
 
 # In-memory store for link groups.
-link_groups = {}
+link_groups = {
+    "AAAAAA": {
+        "name": "Test Group",
+        "links": [
+            {
+                "id": str(uuid.uuid4()),
+                "url": "https://www.google.com",
+                "note": "Search engine",
+                "title": "Google",
+                "favicon": "https://www.google.com/favicon.ico"
+            },
+            {
+                "id": str(uuid.uuid4()),
+                "url": "https://www.youtube.com",
+                "note": "Video platform",
+                "title": "YouTube",
+                "favicon": "https://www.youtube.com/favicon.ico"
+            },
+            {
+                 "id": str(uuid.uuid4()),
+                 "url": "https://www.wikipedia.org",
+                 "note": "Encyclopedia",
+                 "title": "Wikipedia",
+                 "favicon": "https://www.wikipedia.org/favicon.ico"
+            }
+        ]
+    }
+}
 
 def generate_short_id(length=6):
-    """Generates a random short ID of specified length using letters and digits."""
-    characters = string.ascii_letters + string.digits
+    """Generates a random short ID of specified length using uppercase letters and digits."""
+    characters = string.ascii_uppercase + string.digits  # Use only uppercase letters
     return ''.join(random.choice(characters) for _ in range(length))
 
 def fetch_title_and_favicon(url):
@@ -63,7 +90,11 @@ def index():
         group_id = generate_short_id()
         while group_id in link_groups:
             group_id = generate_short_id()
-        group_name = request.form.get('group_name', 'Untitled Group').strip()
+        group_name = request.form.get('group_name')  # Get the group name from the form
+        if not group_name or group_name.strip() == "":  # Check if it's empty or just whitespace
+            group_name = "Unnamed Group"  # Set the default name
+        else:
+            group_name = group_name.strip() # Trim the provided name
         link_groups[group_id] = {"name": group_name, "links": []}
         return redirect(url_for('view_group', group_id=group_id))
     return render_template('index.html')
@@ -71,7 +102,8 @@ def index():
 @app.route('/<group_id>', methods=['GET'])
 def view_group(group_id):
     """
-    Displays the links within a specific group and the rename form.
+    Displays the links within a specific group and
+    the rename form.
     """
     group = link_groups.get(group_id)
     if not group:
@@ -111,7 +143,8 @@ def add_link(group_id):
 
     link_id = str(uuid.uuid4())
     title, favicon_url = fetch_title_and_favicon(url)
-    group['links'].append({"id": link_id, "url": url, "note": note, "title": title, "favicon": favicon_url})
+    group['links'].append({"id": link_id, "url": url, "note": note,
+                        "title": title, "favicon": favicon_url})
 
     return redirect(url_for('view_group', group_id=group_id))
 
