@@ -43,6 +43,34 @@
             .group-header h1 .edit-icon:hover {
                 color: #333;
             }
+            .group-header .group-id-container {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            .group-header .group-id {
+                font-size: 1em;
+                color: #555;
+                background-color: #f9f9f9;
+                padding: 5px 8px;
+                border-radius: 4px;
+            }
+            .group-header .copy-button {
+                background-color: #4caf50;
+                color: white;
+                border: none;
+                padding: 8px 12px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 0.9em;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+            .group-header .copy-button:hover {
+                background-color: #45a049;
+            }
             h2 {
                 color: #333;
                 margin-top: 30px;
@@ -193,6 +221,26 @@
             .home-link:hover {
                 text-decoration: underline;
             }
+
+            /* Toast styles */
+            #toast-container {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 1000;
+            }
+            .toast {
+                background-color: #333;
+                color: white;
+                padding: 10px 15px;
+                border-radius: 4px;
+                margin-top: 10px;
+                opacity: 0;
+                transition: opacity 0.5s ease-in-out;
+            }
+            .toast.show {
+                opacity: 0.8;
+            }
         </style>
     </head>
     <body>
@@ -217,6 +265,15 @@
                         </svg>
                     </span>
                 </h1>
+                <div class="group-id-container">
+                    <span class="group-id">ID: {{ group_id }}</span>
+                    <button
+                        class="copy-button"
+                        onclick="copyGroupId('{{ group_id }}')"
+                    >
+                        Copy ID
+                    </button>
+                </div>
             </div>
 
             <div id="rename-group-form" class="rename-form">
@@ -310,11 +367,71 @@
             >
         </div>
 
+        <div id="toast-container">
+            <div id="copy-toast" class="toast">
+                Group ID copied to clipboard!
+            </div>
+        </div>
+
         <script>
             function toggleRenameForm() {
                 const renameForm = document.getElementById("rename-group-form");
                 renameForm.style.display =
                     renameForm.style.display === "none" ? "flex" : "none";
+            }
+
+            function copyGroupId(groupId) {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard
+                        .writeText(groupId)
+                        .then(() => {
+                            showToast("Group ID copied to clipboard!");
+                        })
+                        .catch((err) => {
+                            console.error(
+                                "Failed to copy using clipboard API: ",
+                                err,
+                            );
+                            fallbackCopyTextToClipboard(groupId);
+                        });
+                } else {
+                    fallbackCopyTextToClipboard(groupId);
+                }
+            }
+
+            function fallbackCopyTextToClipboard(text) {
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+
+                // Avoid scrolling to bottom
+                textArea.style.top = "0";
+                textArea.style.left = "0";
+                textArea.style.position = "fixed";
+
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+
+                try {
+                    const successful = document.execCommand("copy");
+                    const msg = successful ? "successful" : "unsuccessful";
+                    console.log("Fallback: Copying text command was " + msg);
+                    showToast("Group ID copied to clipboard!");
+                } catch (err) {
+                    console.error("Fallback: Unable to copy", err);
+                    alert("Unable to copy Group ID to clipboard.");
+                }
+
+                document.body.removeChild(textArea);
+            }
+
+            function showToast(message) {
+                const toast = document.getElementById("copy-toast");
+                toast.textContent = message;
+                toast.classList.add("show");
+                setTimeout(() => {
+                    toast.classList.remove("show");
+                }, 2000); // Hide toast after 2 seconds
             }
         </script>
     </body>

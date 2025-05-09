@@ -23,12 +23,17 @@
                 color: #0056b3;
                 text-align: center;
             }
-            .create-group-form {
+            .create-group-form,
+            .join-group-form {
                 margin-top: 20px;
                 text-align: center;
+                padding: 15px;
+                border: 1px solid #eee;
+                border-radius: 6px;
+                background-color: #f9f9f9;
             }
             .form-group {
-                margin-bottom: 10px;
+                margin-bottom: 15px;
             }
             .form-group label {
                 display: block;
@@ -42,7 +47,8 @@
                 border-radius: 4px;
                 box-sizing: border-box;
             }
-            .create-btn {
+            .create-btn,
+            .join-btn {
                 display: inline-block;
                 padding: 10px 15px;
                 background-color: #007bff;
@@ -52,9 +58,33 @@
                 border-radius: 5px;
                 font-size: 16px;
                 cursor: pointer;
+                transition: background-color 0.3s ease;
             }
-            .create-btn:hover {
+            .create-btn:hover,
+            .join-btn:hover {
                 background-color: #0056b3;
+            }
+
+            /* Style for the individual input boxes */
+            .join-code-inputs {
+                display: flex;
+                gap: 8px;
+                justify-content: center;
+                margin-top: 10px;
+            }
+            .join-code-input {
+                width: 40px;
+                height: 40px;
+                text-align: center;
+                font-size: 1.2em;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+            .join-code-input:focus {
+                outline: none;
+                border-color: #007bff;
+                box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
             }
         </style>
     </head>
@@ -62,27 +92,141 @@
         <div class="container">
             <h1>Welcome to LinkSea</h1>
             <p style="text-align: center">
-                Collaborate on lists of links easily. Create a new group to get
-                started!
+                Collaborate on lists of links easily. Create a new group or join
+                an existing one!
             </p>
-            <form
-                method="POST"
-                action="{{ url_for('index') }}"
-                class="create-group-form"
-            >
-                <div class="form-group">
-                    <label for="group_name">Optional Group Name:</label>
-                    <input
-                        type="text"
-                        id="group_name"
-                        name="group_name"
-                        placeholder="My Awesome Links"
-                    />
-                </div>
-                <button type="submit" class="create-btn">
-                    Create New Link Group
-                </button>
-            </form>
+
+            <div class="create-group-form">
+                <h2>Create New Link Group</h2>
+                <form method="POST" action="{{ url_for('index') }}">
+                    <div class="form-group">
+                        <label for="group_name">Optional Group Name:</label>
+                        <input
+                            type="text"
+                            id="group_name"
+                            name="group_name"
+                            placeholder="My Awesome Links"
+                        />
+                    </div>
+                    <button type="submit" class="create-btn">
+                        Create New Link Group
+                    </button>
+                </form>
+            </div>
+
+            <div class="join-group-form">
+                <h2>Join Existing Group</h2>
+                <form id="join-group" method="GET">
+                    <label for="join_code">Enter Group ID:</label>
+                    <div class="join-code-inputs">
+                        <input
+                            type="text"
+                            class="join-code-input"
+                            id="join_code_1"
+                            maxlength="1"
+                        />
+                        <input
+                            type="text"
+                            class="join-code-input"
+                            id="join_code_2"
+                            maxlength="1"
+                        />
+                        <input
+                            type="text"
+                            class="join-code-input"
+                            id="join_code_3"
+                            maxlength="1"
+                        />
+                        <input
+                            type="text"
+                            class="join-code-input"
+                            id="join_code_4"
+                            maxlength="1"
+                        />
+                        <input
+                            type="text"
+                            class="join-code-input"
+                            id="join_code_5"
+                            maxlength="1"
+                        />
+                        <input
+                            type="text"
+                            class="join-code-input"
+                            id="join_code_6"
+                            maxlength="1"
+                        />
+                    </div>
+                    <input type="hidden" name="group_id" id="hidden_group_id" />
+                    <button
+                        type="submit"
+                        class="join-btn"
+                        onclick="submitJoinCode()"
+                    >
+                        Join Group
+                    </button>
+                </form>
+            </div>
         </div>
+
+        <script>
+            const codeInputs = document.querySelectorAll(".join-code-input");
+            const joinForm = document.getElementById("join-group");
+
+            codeInputs.forEach((input, index) => {
+                input.addEventListener("input", (e) => {
+                    const value = e.target.value.toUpperCase();
+                    e.target.value = value; // Ensure uppercase
+
+                    if (value.length === 1 && index < codeInputs.length - 1) {
+                        codeInputs[index + 1].focus();
+                    }
+                });
+
+                input.addEventListener("keydown", (e) => {
+                    if (
+                        e.key === "Backspace" &&
+                        e.target.value.length === 0 &&
+                        index > 0
+                    ) {
+                        codeInputs[index - 1].focus();
+                    }
+                });
+            });
+
+            joinForm.addEventListener("paste", (e) => {
+                const pasteData = (
+                    e.clipboardData || window.clipboardData
+                ).getData("text");
+                const code = pasteData.trim().substring(0, 6);
+
+                for (
+                    let i = 0;
+                    i < Math.min(code.length, codeInputs.length);
+                    i++
+                ) {
+                    codeInputs[i].value = code[i];
+                }
+
+                // If 6 characters are pasted, focus the join button
+                if (code.length === 6) {
+                    document.querySelector(".join-btn").focus();
+                }
+                e.preventDefault(); // Prevent default paste action
+            });
+
+            function submitJoinCode() {
+                let fullCode = "";
+                codeInputs.forEach((input) => {
+                    fullCode += input.value;
+                });
+                window.location.href = `/${fullCode}`; // Redirect directly to the group URL
+            }
+
+            // Prevent the default form submission
+            joinForm.addEventListener("submit", (event) => {
+                event.preventDefault();
+                submitJoinCode();
+            });
+        </script>
     </body>
 </html>
