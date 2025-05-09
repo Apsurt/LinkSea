@@ -7,6 +7,15 @@ body {
     color: #333;
 }
 
+input,
+button,
+label,
+textarea,
+select {
+    font-family: inherit;
+    font-size: inherit; /* Optional: to also match the size */
+}
+
 .container {
     max-width: 600px;
     margin: auto;
