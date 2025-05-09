@@ -1,0 +1,286 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f0f2f5;
+    color: #333;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.group-header {
+    color: #1a73e8;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    /* Add some space below the header */
+}
+
+.group-header h1 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.group-header h1 .edit-icon {
+    cursor: pointer;
+    font-size: 1.1em;
+    color: #777;
+}
+
+.group-header h1 .edit-icon:hover {
+    color: #333;
+}
+
+.group-header .group-id-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.group-header .group-id {
+    font-size: 1em;
+    color: #555;
+    background-color: #f9f9f9;
+    padding: 5px 8px;
+    border-radius: 4px;
+}
+
+.group-header .copy-button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0.9em;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.group-header .copy-button:hover {
+    background-color: #45a049;
+}
+
+h2 {
+    color: #333;
+    margin-top: 30px;
+}
+
+.group-info {
+    margin-bottom: 20px;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.group-info code {
+    background-color: #e8e8e8;
+    padding: 3px 6px;
+    border-radius: 4px;
+}
+
+.rename-form {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    display: none;
+    /* Initially hidden */
+    flex-direction: column;
+    /* Stack label and input */
+    gap: 10px;
+}
+
+.rename-form label {
+    font-weight: bold;
+}
+
+.rename-form input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    width: 100%;
+    /* Make input full width within the form */
+}
+
+.rename-form button {
+    padding: 10px 15px;
+    /* Match add link button padding */
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    align-self: flex-start;
+    /* Align button to the start */
+    margin-top: 10px;
+    /* Add margin to top */
+}
+
+.rename-form button:hover {
+    background-color: #0056b3;
+}
+
+.add-link-form {
+    margin-bottom: 30px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+}
+
+.add-link-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.add-link-form input[type="text"],
+.add-link-form input[type="url"] {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.add-link-form button {
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.add-link-form button:hover {
+    background-color: #218838;
+}
+
+.link-list {
+    list-style: none;
+    padding: 0;
+}
+
+.link-item {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.link-item:hover {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.link-details {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.link-details img {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+
+.link-details a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.link-details a:hover {
+    text-decoration: underline;
+}
+
+.link-details .note {
+    display: block;
+    font-size: 0.9em;
+    color: #555;
+    margin-top: 5px;
+}
+
+.link-actions button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.link-actions button:hover {
+    background-color: #c82333;
+}
+
+.no-links {
+    color: #777;
+    font-style: italic;
+}
+
+.home-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.home-link:hover {
+    text-decoration: underline;
+}
+
+/* Toast styles */
+#toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.toast {
+    background-color: #333;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin-top: 10px;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.toast.show {
+    opacity: 0.8;
+}
+
+.link-item {
+    cursor: grab;
+}
+
+.link-item.dragging {
+    opacity: 0.5;
+    background-color: #f0f0f0;
+}
