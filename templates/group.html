@@ -247,12 +247,14 @@
                 <li class="link-item">
                     <div class="link-details">
                         {% if link.favicon %}
-                        <img src="{{ link.favicon }}" alt="Favicon" />
+                        <img src="{{ link.favicon }}" alt="  " />
                         {% endif %}
                         <a href="{{ link.url }}" target="_blank">
                             {{ link.title }}
                         </a>
-                        {% if link.note %}
+                        {% if link.title == link.url %}
+                        <span class="note">(Title not available)</span>
+                        {% endif %} {% if link.note %}
                         <span class="note">{{ link.note }}</span>
                         {% endif %}
                     </div>

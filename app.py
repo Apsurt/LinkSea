@@ -17,16 +17,35 @@ def generate_short_id(length=6):
     return ''.join(random.choice(characters) for _ in range(length))
 
 def fetch_title_and_favicon(url):
-    """Fetches the title and constructs the favicon URL from a given URL."""
+    """Fetches title and favicon, with improved favicon discovery."""
+    title = url
+    favicon_url = None
     try:
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
         response = requests.get(url, headers=headers, timeout=5)
-        response.raise_for_status()  # Raise an exception for bad status codes
+        response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')
+
+        # Fetch title
         title_tag = soup.find('title')
-        title = title_tag.string.strip() if title_tag and title_tag.string else url
+        if title_tag and title_tag.string:
+            full_title = title_tag.string.strip()
+            parts = full_title.split(' · ')
+            title = parts[0].strip() if parts else full_title
+
+        # Fetch favicon
         parsed_url = urlparse(url)
-        favicon_url = f"{parsed_url.scheme}://{parsed_url.netloc}/favicon.ico"
+        base_url = f"{parsed_url.scheme}://{parsed_url.netloc}"
+        favicon_link = soup.find('link', rel='icon')
+        if favicon_link and 'href' in favicon_link.attrs:
+            favicon_href = favicon_link['href']
+            if urlparse(favicon_href).netloc:  # If it's an absolute URL
+                favicon_url = favicon_href
+            else:  # If it's a relative URL, construct the absolute URL
+                favicon_url = f"{base_url}{favicon_href}"
+        elif parsed_url.netloc:
+            favicon_url = f"{base_url}/favicon.ico"
+
         return title, favicon_url
     except requests.exceptions.RequestException:
         return url, None
