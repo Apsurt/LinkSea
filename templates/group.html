@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>LinkSea Group - {{ group_name }} ({{ group_id }})</title>
+        <title>LinkSea Group - {{ group_name }}</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -20,17 +20,28 @@
                 border-radius: 8px;
                 box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             }
-            h1 {
+            .group-header {
                 color: #1a73e8;
                 border-bottom: 2px solid #eee;
                 padding-bottom: 10px;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
+                margin-bottom: 20px; /* Add some space below the header */
             }
-            h1 span {
-                font-size: 0.8em;
-                color: #555;
+            .group-header h1 {
+                margin: 0;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            .group-header h1 .edit-icon {
+                cursor: pointer;
+                font-size: 1.1em;
+                color: #777;
+            }
+            .group-header h1 .edit-icon:hover {
+                color: #333;
             }
             h2 {
                 color: #333;
@@ -52,28 +63,30 @@
                 padding: 15px;
                 background-color: #f9f9f9;
                 border-radius: 6px;
-                display: flex;
+                display: none; /* Initially hidden */
+                flex-direction: column; /* Stack label and input */
                 gap: 10px;
-                align-items: center;
             }
             .rename-form label {
                 font-weight: bold;
             }
             .rename-form input[type="text"] {
-                flex-grow: 1;
                 padding: 8px;
                 border: 1px solid #ddd;
                 border-radius: 4px;
                 box-sizing: border-box;
+                width: 100%; /* Make input full width within the form */
             }
             .rename-form button {
-                padding: 8px 12px;
+                padding: 10px 15px; /* Match add link button padding */
                 background-color: #007bff;
                 color: white;
                 border: none;
                 border-radius: 4px;
                 cursor: pointer;
                 font-size: 1em;
+                align-self: flex-start; /* Align button to the start */
+                margin-top: 10px; /* Add margin to top */
             }
             .rename-form button:hover {
                 background-color: #0056b3;
@@ -184,33 +197,51 @@
     </head>
     <body>
         <div class="container">
-            <h1>
-                {{ group_name }}
-                <span>({{ group_id }})</span>
-            </h1>
+            <div class="group-header">
+                <h1>
+                    <span id="group-title">{{ group_name }}</span>
+                    <span class="edit-icon" onclick="toggleRenameForm()">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 512 512"
+                            style="
+                                width: 0.5em;
+                                height: 0.5em;
+                                vertical-align: middle;
+                                fill: #777;
+                            "
+                        >
+                            <path
+                                d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"
+                            />
+                        </svg>
+                    </span>
+                </h1>
+            </div>
+
+            <div id="rename-group-form" class="rename-form">
+                <form
+                    method="POST"
+                    action="{{ url_for('rename_group', group_id=group_id) }}"
+                >
+                    <label for="group_name">New Name:</label>
+                    <input
+                        type="text"
+                        id="group_name"
+                        name="group_name"
+                        value="{{ group_name }}"
+                        required
+                    />
+                    <button type="submit">Rename</button>
+                </form>
+            </div>
+
             <div class="group-info">
                 <p>
                     Share this URL to collaborate:
                     <code>http://localhost:5000/{{ group_id }}</code>
                 </p>
             </div>
-
-            <h2>Rename Group</h2>
-            <form
-                class="rename-form"
-                method="POST"
-                action="{{ url_for('rename_group', group_id=group_id) }}"
-            >
-                <label for="group_name">New Name:</label>
-                <input
-                    type="text"
-                    id="group_name"
-                    name="group_name"
-                    value="{{ group_name }}"
-                    required
-                />
-                <button type="submit">Rename</button>
-            </form>
 
             <h2>Add New Link</h2>
             <form
@@ -247,7 +278,7 @@
                 <li class="link-item">
                     <div class="link-details">
                         {% if link.favicon %}
-                        <img src="{{ link.favicon }}" alt="  " />
+                        <img src="{{ link.favicon }}" alt=" " />
                         {% endif %}
                         <a href="{{ link.url }}" target="_blank">
                             {{ link.title }}
@@ -278,5 +309,13 @@
                 >&larr; Back to Home / Create New Group</a
             >
         </div>
+
+        <script>
+            function toggleRenameForm() {
+                const renameForm = document.getElementById("rename-group-form");
+                renameForm.style.display =
+                    renameForm.style.display === "none" ? "flex" : "none";
+            }
+        </script>
     </body>
 </html>
