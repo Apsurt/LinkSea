@@ -59,13 +59,29 @@ const linkList = document.querySelector(".link-list");
 let draggedItem = null;
 
 linkList.addEventListener("dragstart", (e) => {
-  draggedItem = e.target;
-  e.target.classList.add("dragging");
+  let targetElement = e.target;
+  // Traverse up the DOM tree to find the .link-item
+  while (targetElement && !targetElement.classList.contains("link-item")) {
+    targetElement = targetElement.parentElement;
+  }
+
+  if (targetElement) {
+    draggedItem = targetElement;
+    draggedItem.classList.add("dragging");
+  }
+  // Importantly, prevent default drag behavior on draggable children
+  if (e.target !== draggedItem && e.target.draggable !== true) {
+    e.preventDefault();
+  }
 });
+
 linkList.addEventListener("dragend", (e) => {
-  e.target.classList.remove("dragging");
-  draggedItem = null;
+  if (draggedItem) {
+    draggedItem.classList.remove("dragging");
+    draggedItem = null;
+  }
 });
+
 linkList.addEventListener("dragover", (e) => {
   e.preventDefault();
   const afterElement = getDragAfterElement(linkList, e.clientY);
