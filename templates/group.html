@@ -241,6 +241,14 @@
             .toast.show {
                 opacity: 0.8;
             }
+            .link-item {
+                cursor: grab;
+            }
+
+            .link-item.dragging {
+                opacity: 0.5;
+                background-color: #f0f0f0;
+            }
         </style>
     </head>
     <body>
@@ -332,7 +340,11 @@
             {% if links %}
             <ul class="link-list">
                 {% for link in links %}
-                <li class="link-item">
+                <li
+                    class="link-item"
+                    draggable="true"
+                    data-link-id="{{ link.id }}"
+                >
                     <div class="link-details">
                         {% if link.favicon %}
                         <img src="{{ link.favicon }}" alt=" " />
@@ -432,6 +444,48 @@
                 setTimeout(() => {
                     toast.classList.remove("show");
                 }, 2000); // Hide toast after 2 seconds
+            }
+
+            const linkList = document.querySelector(".link-list");
+            let draggedItem = null;
+
+            linkList.addEventListener("dragstart", (e) => {
+                draggedItem = e.target;
+                e.target.classList.add("dragging");
+            });
+
+            linkList.addEventListener("dragend", (e) => {
+                e.target.classList.remove("dragging");
+                draggedItem = null;
+            });
+
+            linkList.addEventListener("dragover", (e) => {
+                e.preventDefault();
+                const afterElement = getDragAfterElement(linkList, e.clientY);
+                if (afterElement == null) {
+                    linkList.appendChild(draggedItem);
+                } else {
+                    linkList.insertBefore(draggedItem, afterElement);
+                }
+            });
+
+            function getDragAfterElement(container, y) {
+                const draggableElements = [
+                    ...container.querySelectorAll(".link-item:not(.dragging)"),
+                ];
+
+                return draggableElements.reduce(
+                    (closest, child) => {
+                        const box = child.getBoundingClientRect();
+                        const offset = y - box.top - box.height / 2;
+                        if (offset < 0 && offset > closest.offset) {
+                            return { offset: offset, element: child };
+                        } else {
+                            return closest;
+                        }
+                    },
+                    { offset: Number.NEGATIVE_INFINITY },
+                ).element;
             }
         </script>
     </body>
