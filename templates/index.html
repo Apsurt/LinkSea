@@ -23,14 +23,30 @@
                 color: #0056b3;
                 text-align: center;
             }
-            .create-btn {
+            .create-group-form {
+                margin-top: 20px;
+                text-align: center;
+            }
+            .form-group {
+                margin-bottom: 10px;
+            }
+            .form-group label {
                 display: block;
-                width: 200px;
-                margin: 20px auto;
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+            .form-group input[type="text"] {
+                width: calc(100% - 12px);
+                padding: 8px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+            .create-btn {
+                display: inline-block;
                 padding: 10px 15px;
                 background-color: #007bff;
                 color: white;
-                text-align: center;
                 text-decoration: none;
                 border: none;
                 border-radius: 5px;
@@ -49,7 +65,20 @@
                 Collaborate on lists of links easily. Create a new group to get
                 started!
             </p>
-            <form method="POST" action="{{ url_for('index') }}">
+            <form
+                method="POST"
+                action="{{ url_for('index') }}"
+                class="create-group-form"
+            >
+                <div class="form-group">
+                    <label for="group_name">Optional Group Name:</label>
+                    <input
+                        type="text"
+                        id="group_name"
+                        name="group_name"
+                        placeholder="My Awesome Links"
+                    />
+                </div>
                 <button type="submit" class="create-btn">
                     Create New Link Group
                 </button>

@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>LinkSea Group - {{ group_id }}</title>
+        <title>LinkSea Group - {{ group_name }} ({{ group_id }})</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -24,6 +24,13 @@
                 color: #1a73e8;
                 border-bottom: 2px solid #eee;
                 padding-bottom: 10px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            h1 span {
+                font-size: 0.8em;
+                color: #555;
             }
             h2 {
                 color: #333;
@@ -38,6 +45,38 @@
                 background-color: #e8e8e8;
                 padding: 3px 6px;
                 border-radius: 4px;
+            }
+
+            .rename-form {
+                margin-bottom: 20px;
+                padding: 15px;
+                background-color: #f9f9f9;
+                border-radius: 6px;
+                display: flex;
+                gap: 10px;
+                align-items: center;
+            }
+            .rename-form label {
+                font-weight: bold;
+            }
+            .rename-form input[type="text"] {
+                flex-grow: 1;
+                padding: 8px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+            .rename-form button {
+                padding: 8px 12px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 1em;
+            }
+            .rename-form button:hover {
+                background-color: #0056b3;
             }
 
             .add-link-form {
@@ -91,6 +130,16 @@
             .link-item:hover {
                 box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
             }
+            .link-details {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            .link-details img {
+                width: 16px;
+                height: 16px;
+                vertical-align: middle;
+            }
             .link-details a {
                 color: #007bff;
                 text-decoration: none;
@@ -135,13 +184,33 @@
     </head>
     <body>
         <div class="container">
-            <h1>Link Group</h1>
+            <h1>
+                {{ group_name }}
+                <span>({{ group_id }})</span>
+            </h1>
             <div class="group-info">
                 <p>
                     Share this URL to collaborate:
                     <code>http://localhost:5000/{{ group_id }}</code>
                 </p>
             </div>
+
+            <h2>Rename Group</h2>
+            <form
+                class="rename-form"
+                method="POST"
+                action="{{ url_for('rename_group', group_id=group_id) }}"
+            >
+                <label for="group_name">New Name:</label>
+                <input
+                    type="text"
+                    id="group_name"
+                    name="group_name"
+                    value="{{ group_name }}"
+                    required
+                />
+                <button type="submit">Rename</button>
+            </form>
 
             <h2>Add New Link</h2>
             <form
@@ -177,9 +246,12 @@
                 {% for link in links %}
                 <li class="link-item">
                     <div class="link-details">
-                        <a href="{{ link.url }}" target="_blank"
-                            >{{ link.url }}</a
-                        >
+                        {% if link.favicon %}
+                        <img src="{{ link.favicon }}" alt="Favicon" />
+                        {% endif %}
+                        <a href="{{ link.url }}" target="_blank">
+                            {{ link.title }}
+                        </a>
                         {% if link.note %}
                         <span class="note">{{ link.note }}</span>
                         {% endif %}
