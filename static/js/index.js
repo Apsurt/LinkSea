@@ -4,10 +4,19 @@ const joinForm = document.getElementById("join-group");
 codeInputs.forEach((input, index) => {
   input.addEventListener("input", (e) => {
     const value = e.target.value.toUpperCase();
-    e.target.value = value; // Ensure uppercase
+    e.target.value = value;
 
     if (value.length === 1 && index < codeInputs.length - 1) {
       codeInputs[index + 1].focus();
+    }
+
+    // Check if all inputs have values
+    let fullCode = "";
+    codeInputs.forEach((input) => {
+      fullCode += input.value;
+    });
+    if (fullCode.length === 6) {
+      submitJoinCode();
     }
   });
 
@@ -17,6 +26,7 @@ codeInputs.forEach((input, index) => {
     }
   });
 });
+
 joinForm.addEventListener("paste", (e) => {
   const pasteData = (e.clipboardData || window.clipboardData).getData("text");
   const code = pasteData.trim().substring(0, 6);
