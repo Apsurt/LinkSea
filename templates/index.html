@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>LinkSea - Collaborative Link Sharing</title>
+        <style>
+            body {
+                font-family: sans-serif;
+                margin: 20px;
+                background-color: #f4f4f9;
+                color: #333;
+            }
+            .container {
+                max-width: 600px;
+                margin: auto;
+                background: white;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            h1 {
+                color: #0056b3;
+                text-align: center;
+            }
+            .create-btn {
+                display: block;
+                width: 200px;
+                margin: 20px auto;
+                padding: 10px 15px;
+                background-color: #007bff;
+                color: white;
+                text-align: center;
+                text-decoration: none;
+                border: none;
+                border-radius: 5px;
+                font-size: 16px;
+                cursor: pointer;
+            }
+            .create-btn:hover {
+                background-color: #0056b3;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Welcome to LinkSea</h1>
+            <p style="text-align: center">
+                Collaborate on lists of links easily. Create a new group to get
+                started!
+            </p>
+            <form method="POST" action="{{ url_for('index') }}">
+                <button type="submit" class="create-btn">
+                    Create New Link Group
+                </button>
+            </form>
+        </div>
+    </body>
+</html>
