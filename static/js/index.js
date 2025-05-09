@@ -35,11 +35,11 @@ joinForm.addEventListener("paste", (e) => {
     codeInputs[i].value = code[i];
   }
 
-  // If 6 characters are pasted, focus the join button
+  // If 6 characters are pasted, submit the code
   if (code.length === 6) {
-    document.querySelector(".join-btn").focus();
+    submitJoinCode(); // Call the submitJoinCode function
   }
-  e.preventDefault(); // Prevent default paste action
+  e.preventDefault();
 });
 
 function submitJoinCode() {
@@ -50,8 +50,8 @@ function submitJoinCode() {
   window.location.href = `/${fullCode}`; // Redirect directly to the group URL
 }
 
-// Prevent the default form submission
+// Prevent the default form submission (already handled by typing/pasting)
 joinForm.addEventListener("submit", (event) => {
   event.preventDefault();
-  submitJoinCode();
+  // submitJoinCode();  //  Remove this line.
 });
