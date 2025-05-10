@@ -1,3 +1,17 @@
+function toggleLinkEditForm(linkId) {
+  const editForm = document.getElementById(`edit-link-form-${linkId}`);
+  editForm.style.display = editForm.style.display === "none" ? "flex" : "none";
+
+  const linkItem = document.querySelector(
+    `.link-item[data-link-id="${linkId}"]`,
+  );
+  if (editForm.style.display === "flex") {
+    linkItem.setAttribute("draggable", false);
+  } else {
+    linkItem.setAttribute("draggable", true);
+  }
+}
+
 function toggleRenameForm() {
   const renameForm = document.getElementById("rename-group-form");
   renameForm.style.display =
@@ -60,16 +74,14 @@ let draggedItem = null;
 
 linkList.addEventListener("dragstart", (e) => {
   let targetElement = e.target;
-  // Traverse up the DOM tree to find the .link-item
   while (targetElement && !targetElement.classList.contains("link-item")) {
     targetElement = targetElement.parentElement;
   }
 
-  if (targetElement) {
+  if (targetElement && targetElement.getAttribute("draggable") !== "false") {
     draggedItem = targetElement;
     draggedItem.classList.add("dragging");
   }
-  // Importantly, prevent default drag behavior on draggable children
   if (e.target !== draggedItem && e.target.draggable !== true) {
     e.preventDefault();
   }
@@ -89,6 +101,27 @@ linkList.addEventListener("dragover", (e) => {
     linkList.appendChild(draggedItem);
   } else {
     linkList.insertBefore(draggedItem, afterElement);
+  }
+});
+
+linkList.addEventListener("mouseover", (e) => {
+  if (e.target.tagName === "BUTTON") {
+    const linkItem = e.target.closest(".link-item");
+    if (linkItem) {
+      linkItem.setAttribute("draggable", false);
+    }
+  }
+});
+
+linkList.addEventListener("mouseout", (e) => {
+  if (e.target.tagName === "BUTTON") {
+    const linkItem = e.target.closest(".link-item");
+    if (
+      linkItem &&
+      !linkItem.querySelector('.edit-link-form[style*="display: flex"]')
+    ) {
+      linkItem.setAttribute("draggable", true);
+    }
   }
 });
 

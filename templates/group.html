@@ -115,6 +115,12 @@
                         {% endif %}
                     </div>
                     <div class="link-actions">
+                        <button
+                            type="button"
+                            onclick="toggleLinkEditForm('{{ link.id }}')"
+                        >
+                            Edit Title
+                        </button>
                         <form
                             method="POST"
                             action="{{ url_for('remove_link', group_id=group_id, link_id=link.id) }}"
@@ -123,6 +129,23 @@
                             <button type="submit">Remove</button>
                         </form>
                     </div>
+
+                    <form
+                        id="edit-link-form-{{ link.id }}"
+                        class="edit-link-form"
+                        method="POST"
+                        action="{{ url_for('edit_link', group_id=group_id, link_id=link.id) }}"
+                    >
+                        <label for="title">Edit Title:</label>
+                        <input
+                            type="text"
+                            id="title"
+                            name="title"
+                            value="{{ link.title }}"
+                            required
+                        />
+                        <button type="submit">Update</button>
+                    </form>
                 </li>
                 {% endfor %}
             </ul>

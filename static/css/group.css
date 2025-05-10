@@ -236,17 +236,17 @@ h2 {
 }
 
 .link-actions button {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 4px;
+    padding: 6px 10px;
+    margin-left: 5px;
+    font-size: 0.8em;
     cursor: pointer;
-    font-size: 0.9em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f0f0f0;
 }
 
 .link-actions button:hover {
-    background-color: #c82333;
+    background-color: #e0e0e0;
 }
 
 .no-links {
@@ -294,4 +294,37 @@ h2 {
 .link-item.dragging {
     opacity: 0.5;
     background-color: #f0f0f0;
+}
+
+.edit-link-form {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.edit-link-form label {
+    font-weight: bold;
+}
+
+.edit-link-form input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.edit-link-form button {
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.edit-link-form button:hover {
+    background-color: #0056b3;
 }
