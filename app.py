@@ -193,6 +193,26 @@ def reorder_link(group_id, link_id):
 
     return redirect(url_for('view_group', group_id=group_id))
 
+@app.route('/<group_id>/edit/<link_id>', methods=['POST'])
+def edit_link(group_id, link_id):
+    """
+    Edits the title of a specific link within a group.
+    """
+    group = link_groups.get(group_id)
+    if not group:
+        abort(404, description="Group not found. Cannot edit link.")
+
+    new_title = request.form.get('title').strip()
+    if not new_title:
+        return redirect(url_for('view_group', group_id=group_id, error="Title cannot be empty."))  # Or handle this with an error message
+
+    for link in group['links']:
+        if link['id'] == link_id:
+            link['title'] = new_title
+            break
+
+    return redirect(url_for('view_group', group_id=group_id))
+
 # Custom 404 error page
 @app.errorhandler(404)
 def page_not_found(e):

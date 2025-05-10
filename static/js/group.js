@@ -1,3 +1,17 @@
+function toggleLinkEditForm(linkId) {
+  const editForm = document.getElementById(`edit-link-form-${linkId}`);
+  editForm.style.display = editForm.style.display === "none" ? "flex" : "none";
+
+  const linkItem = document.querySelector(
+    `.link-item[data-link-id="${linkId}"]`,
+  );
+  if (editForm.style.display === "flex") {
+    linkItem.setAttribute("draggable", false);
+  } else {
+    linkItem.setAttribute("draggable", true);
+  }
+}
+
 function toggleRenameForm() {
   const renameForm = document.getElementById("rename-group-form");
   renameForm.style.display =
@@ -65,7 +79,8 @@ linkList.addEventListener("dragstart", (e) => {
     targetElement = targetElement.parentElement;
   }
 
-  if (targetElement) {
+  if (targetElement && targetElement.getAttribute("draggable") !== "false") {
+    // Check if draggable is not explicitly false
     draggedItem = targetElement;
     draggedItem.classList.add("dragging");
   }
