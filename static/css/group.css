@@ -236,17 +236,17 @@ h2 {
 }
 
 .link-actions button {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 4px;
+    padding: 6px 10px;
+    margin-left: 5px;
+    font-size: 0.8em;
     cursor: pointer;
-    font-size: 0.9em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f0f0f0;
 }
 
 .link-actions button:hover {
-    background-color: #c82333;
+    background-color: #e0e0e0;
 }
 
 .no-links {

@@ -74,17 +74,14 @@ let draggedItem = null;
 
 linkList.addEventListener("dragstart", (e) => {
   let targetElement = e.target;
-  // Traverse up the DOM tree to find the .link-item
   while (targetElement && !targetElement.classList.contains("link-item")) {
     targetElement = targetElement.parentElement;
   }
 
   if (targetElement && targetElement.getAttribute("draggable") !== "false") {
-    // Check if draggable is not explicitly false
     draggedItem = targetElement;
     draggedItem.classList.add("dragging");
   }
-  // Importantly, prevent default drag behavior on draggable children
   if (e.target !== draggedItem && e.target.draggable !== true) {
     e.preventDefault();
   }
