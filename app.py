@@ -39,8 +39,8 @@ link_groups = {
 }
 
 def generate_short_id(length=6):
-    """Generates a random short ID of specified length using uppercase letters and digits."""
-    characters = string.ascii_uppercase + string.digits  # Use only uppercase letters
+    """Generates a random short ID of specified length using uppercase letters and digits, excluding 'I', 'L', 'O', and '0'."""
+    characters = ''.join(c for c in string.ascii_uppercase + string.digits if c not in 'ILO0')
     return ''.join(random.choice(characters) for _ in range(length))
 
 def fetch_title_and_favicon(url):
@@ -92,7 +92,7 @@ def index():
             group_id = generate_short_id()
         group_name = request.form.get('group_name')  # Get the group name from the form
         if not group_name or group_name.strip() == "":  # Check if it's empty or just whitespace
-            group_name = "Unnamed Group"  # Set the default name
+            group_name = "Unnamed Group"   # Set the default name
         else:
             group_name = group_name.strip() # Trim the provided name
         link_groups[group_id] = {"name": group_name, "links": []}
