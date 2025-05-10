@@ -104,6 +104,27 @@ linkList.addEventListener("dragover", (e) => {
   }
 });
 
+linkList.addEventListener("mouseover", (e) => {
+  if (e.target.tagName === "BUTTON") {
+    const linkItem = e.target.closest(".link-item");
+    if (linkItem) {
+      linkItem.setAttribute("draggable", false);
+    }
+  }
+});
+
+linkList.addEventListener("mouseout", (e) => {
+  if (e.target.tagName === "BUTTON") {
+    const linkItem = e.target.closest(".link-item");
+    if (
+      linkItem &&
+      !linkItem.querySelector('.edit-link-form[style*="display: flex"]')
+    ) {
+      linkItem.setAttribute("draggable", true);
+    }
+  }
+});
+
 function getDragAfterElement(container, y) {
   const draggableElements = [
     ...container.querySelectorAll(".link-item:not(.dragging)"),
