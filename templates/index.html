@@ -3,91 +3,93 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>LinkSea - Collaborative Link Sharing</title>
-        <link rel="stylesheet" href="static/css/index.css" />
+        <title>LinkSea - Share Smarter, Together</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='css/index.css') }}"
+        />
+        <link
+            rel="icon"
+            href="{{ url_for('static', filename='assets/favicon.ico') }}"
+            type="image/x-icon"
+        />
     </head>
 
     <body>
-        <div class="container">
-            <h1>Welcome to LinkSea</h1>
-            <p style="text-align: center">
-                Collaborate on lists of links easily. Create a new group or join
-                an existing one!
-            </p>
+        <header class="site-header">
+            <div class="container logo-container">
+                <img
+                    src="{{ url_for('static', filename='assets/logo.svg') }}"
+                    alt="LinkSea Logo"
+                    class="logo-img"
+                />
+                <span class="logo-text">LinkSea</span>
+            </div>
+        </header>
 
-            <div class="create-group-form">
-                <h2>Create New Link Group</h2>
-                <form method="POST" action="{{ url_for('index') }}">
-                    <div class="form-group">
-                        <label for="group_name">Optional Group Name:</label>
-                        <input
-                            type="text"
-                            id="group_name"
-                            name="group_name"
-                            placeholder="My Awesome Links"
-                        />
-                    </div>
-
-                    <button type="submit" class="create-btn">
-                        Create New Link Group
+        <main class="container">
+            <section class="hero-section">
+                <h1 class="hero-title">Share Smarter, Together.</h1>
+                <p class="hero-tagline">
+                    Create collaborative link groups in seconds. No sign-up
+                    required.
+                </p>
+                <form
+                    method="POST"
+                    action="{{ url_for('index') }}"
+                    class="create-group-cta-form"
+                >
+                    <input
+                        type="text"
+                        id="group_name_hero"
+                        name="group_name"
+                        class="form-input-hero"
+                        placeholder="Optional: Name your link group"
+                    />
+                    <button type="submit" class="btn btn-primary btn-hero">
+                        ✨ Create a New Group
                     </button>
                 </form>
-            </div>
+            </section>
 
-            <div class="join-group-form">
-                <h2>Join Existing Group</h2>
-                <form id="join-group" method="GET">
-                    <label for="join_code">Enter Group ID:</label>
-                    <div class="join-code-inputs">
-                        <input
-                            type="text"
-                            class="join-code-input"
-                            id="join_code_1"
-                            maxlength="1"
-                        />
-                        <input
-                            type="text"
-                            class="join-code-input"
-                            id="join_code_2"
-                            maxlength="1"
-                        />
-                        <input
-                            type="text"
-                            class="join-code-input"
-                            id="join_code_3"
-                            maxlength="1"
-                        />
-                        <input
-                            type="text"
-                            class="join-code-input"
-                            id="join_code_4"
-                            maxlength="1"
-                        />
-                        <input
-                            type="text"
-                            class="join-code-input"
-                            id="join_code_5"
-                            maxlength="1"
-                        />
-                        <input
-                            type="text"
-                            class="join-code-input"
-                            id="join_code_6"
-                            maxlength="1"
-                        />
-                    </div>
-                    <input type="hidden" name="group_id" id="hidden_group_id" />
-                    <button
-                        type="submit"
-                        class="join-btn"
-                        onclick="submitJoinCode()"
-                    >
-                        Join Group
-                    </button>
-                </form>
-            </div>
-        </div>
+            <section class="actions-section">
+                <div class="action-card join-group-card">
+                    <h2 class="action-title">Have a Group ID?</h2>
+                    <form id="join-group-form" class="join-group-form-content">
+                        <div class="form-group">
+                            <label
+                                for="group_id_input"
+                                class="form-label sr-only"
+                                >Enter 6-character Group ID</label
+                            >
+                            <input
+                                type="text"
+                                id="group_id_input"
+                                name="group_id"
+                                class="form-input"
+                                placeholder="Enter 6-character Group ID"
+                                maxlength="6"
+                                pattern="[A-Z0-9]{6}"
+                                title="Enter a 6-character uppercase alphanumeric Group ID."
+                                required
+                            />
+                        </div>
+                        <button type="submit" class="btn btn-secondary">
+                            Join Group
+                        </button>
+                    </form>
+                </div>
+            </section>
+        </main>
 
-        <script src="static/js/index.js"></script>
+        <footer class="site-footer-bottom">
+            <p>&copy; <span id="currentYear"></span> LinkSea. Share Freely.</p>
+        </footer>
+
+        <script src="{{ url_for('static', filename='js/index.js') }}"></script>
     </body>
 </html>

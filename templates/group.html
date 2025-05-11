@@ -4,166 +4,301 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>LinkSea Group - {{ group_name }}</title>
-        <link rel="stylesheet" href="static/css/group.css" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='css/group.css') }}"
+        />
+        <link
+            rel="icon"
+            href="{{ url_for('static', filename='assets/favicon.ico') }}"
+            type="image/x-icon"
+        />
     </head>
 
     <body>
-        <div class="container">
-            <div class="group-header">
-                <h1>
-                    <span id="group-title">{{ group_name }}</span>
-                    <span class="edit-icon" onclick="toggleRenameForm()">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 512 512"
-                            style="
-                                width: 0.5em;
-                                height: 0.5em;
-                                vertical-align: middle;
-                                fill: #777;
-                            "
-                        >
-                            <path
-                                d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"
-                            />
-                        </svg>
-                    </span>
-                </h1>
-                <div class="group-id-container">
-                    <span class="group-id">ID: {{ group_id }}</span>
+        <header class="site-header-group">
+            <div class="container header-content-group">
+                <a href="{{ url_for('index') }}" class="logo-link-group">
+                    <img
+                        src="{{ url_for('static', filename='assets/logo.svg') }}"
+                        alt="LinkSea Logo"
+                        class="logo-img-group"
+                    />
+                    <span class="logo-text-group">LinkSea</span>
+                </a>
+                <a href="{{ url_for('index') }}" class="back-to-home-btn"
+                    >← Back to Home</a
+                >
+            </div>
+        </header>
+
+        <main class="container main-content-group">
+            <div class="group-meta-header">
+                <div class="group-title-section">
+                    <h1 id="group-title-display" class="group-name-heading">
+                        {{ group_name }}
+                    </h1>
                     <button
-                        class="copy-button"
-                        onclick="copyGroupId('{{ group_id }}')"
+                        class="icon-btn"
+                        id="edit-group-name-btn"
+                        onclick="toggleRenameForm()"
+                        title="Rename Group"
                     >
-                        Copy ID
+                        <i class="fas fa-pencil-alt"></i>
+                    </button>
+                </div>
+                <div class="group-id-section">
+                    <span class="group-id-text">ID: {{ group_id }}</span>
+                    <button
+                        class="btn btn-outline-secondary btn-copy"
+                        onclick="copyGroupId('{{ group_id }}')"
+                        title="Copy Group ID"
+                    >
+                        <i class="far fa-copy"></i> Copy ID
                     </button>
                 </div>
             </div>
-
-            <div id="rename-group-form" class="rename-form">
-                <form
-                    method="POST"
-                    action="{{ url_for('rename_group', group_id=group_id) }}"
+            <span
+                class="last-accessed-info"
+                id="last-accessed-info-placeholder"
+            >
+                {% if group_last_accessed %} Last activity:
+                <span id="last-accessed-time"
+                    >{{ group_last_accessed | format_datetime_ago }}</span
                 >
-                    <label for="group_name">New Name:</label>
-                    <input
-                        type="text"
-                        id="group_name"
-                        name="group_name"
-                        value=""
-                        required
-                    />
-                    <button type="submit">Rename</button>
+                {% endif %}
+            </span>
+
+            <form
+                id="rename-group-form"
+                class="rename-group-form"
+                method="POST"
+                action="{{ url_for('rename_group', group_id=group_id) }}"
+            >
+                <label for="new_group_name_input" class="form-label sr-only"
+                    >New Group Name:</label
+                >
+                <input
+                    type="text"
+                    id="new_group_name_input"
+                    name="group_name"
+                    class="form-input"
+                    value="{{ group_name }}"
+                    placeholder="Enter new group name"
+                    required
+                />
+                <div class="rename-form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        Save Name
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        onclick="toggleRenameForm()"
+                    >
+                        Cancel
+                    </button>
+                </div>
+            </form>
+
+            <div class="add-link-section">
+                <h2 class="section-title">Add New Link</h2>
+                <form
+                    id="add-link-form-main"
+                    class="add-link-form-content"
+                    method="POST"
+                    action="{{ url_for('add_link', group_id=group_id) }}"
+                >
+                    <div class="form-row">
+                        <div class="form-group flex-grow">
+                            <label for="url_input" class="form-label"
+                                >Link URL</label
+                            >
+                            <input
+                                type="url"
+                                id="url_input"
+                                name="url"
+                                class="form-input"
+                                placeholder="https://example.com"
+                                required
+                            />
+                        </div>
+                        <div class="form-group flex-grow">
+                            <label for="note_input" class="form-label"
+                                >Note (Optional)</label
+                            >
+                            <input
+                                type="text"
+                                id="note_input"
+                                name="note"
+                                class="form-input"
+                                placeholder="Short description of the link"
+                            />
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary add-link-btn">
+                        <i class="fas fa-plus"></i> Add Link
+                    </button>
                 </form>
             </div>
 
-            <div class="group-info">
-                <p>
-                    Share this URL to collaborate:
-                    <code>https://linksea-alpha.vercel.app/{{ group_id }}</code>
-                </p>
-            </div>
-
-            <h2>Add New Link</h2>
-            <form
-                class="add-link-form"
-                method="POST"
-                action="{{ url_for('add_link', group_id=group_id) }}"
-            >
-                <div>
-                    <label for="url">Link URL:</label>
-                    <input
-                        type="url"
-                        id="url"
-                        name="url"
-                        placeholder="https://example.com"
-                        required
-                    />
-                </div>
-                <div>
-                    <label for="note">Note (Optional):</label>
-                    <input
-                        type="text"
-                        id="note"
-                        name="note"
-                        placeholder="Short description"
-                    />
-                </div>
-                <button type="submit">Add Link</button>
-            </form>
-
-            <h2>Links</h2>
-            {% if links %}
-            <ul class="link-list">
-                {% for link in links %}
-                <li
-                    class="link-item"
-                    draggable="true"
-                    data-link-id="{{ link.id }}"
-                >
-                    <div class="link-details">
-                        {% if link.favicon %}
-                        <img src="{{ link.favicon }}" alt=" " />
-                        {% endif %}
-                        <a href="{{ link.url }}" target="_blank">
-                            {{ link.title }}
-                        </a>
-                        {% if link.title == link.url %}
-                        <span class="note">(Title not available)</span>
-                        {% endif %} {% if link.note %}
-                        <span class="note">{{ link.note }}</span>
-                        {% endif %}
-                    </div>
-                    <div class="link-actions">
-                        <button
-                            type="button"
-                            onclick="toggleLinkEditForm('{{ link.id }}')"
-                        >
-                            Edit Title
-                        </button>
-                        <form
-                            method="POST"
-                            action="{{ url_for('remove_link', group_id=group_id, link_id=link.id) }}"
-                            style="display: inline"
-                        >
-                            <button type="submit">Remove</button>
-                        </form>
-                    </div>
-
-                    <form
-                        id="edit-link-form-{{ link.id }}"
-                        class="edit-link-form"
-                        method="POST"
-                        action="{{ url_for('edit_link', group_id=group_id, link_id=link.id) }}"
+            <div class="links-section">
+                <h2 class="section-title">Links</h2>
+                {% if links %}
+                <ul class="link-list" id="link-list-items">
+                    {% for link in links %}
+                    <li
+                        class="link-item-card"
+                        draggable="true"
+                        data-link-id="{{ link.id }}"
                     >
-                        <label for="title">Edit Title:</label>
-                        <input
-                            type="text"
-                            id="title"
-                            name="title"
-                            value="{{ link.title }}"
-                            required
-                        />
-                        <button type="submit">Update</button>
-                    </form>
-                </li>
-                {% endfor %}
-            </ul>
-            {% else %}
-            <p class="no-links">No links in this group yet. Add one above!</p>
-            {% endif %}
-
-            <a href="{{ url_for('index') }}" class="home-link">
-                ← Back to Home / Create New Group</a
-            >
-        </div>
-
-        <div id="toast-container">
-            <div id="copy-toast" class="toast">
-                Group ID copied to clipboard!
+                        <div class="link-item-content">
+                            <span class="drag-handle"
+                                ><i class="fas fa-grip-vertical"></i
+                            ></span>
+                            <div class="link-favicon">
+                                {% if link.favicon %}
+                                <img
+                                    src="{{ link.favicon }}"
+                                    alt="Favicon"
+                                    class="favicon-img"
+                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                                />
+                                <span
+                                    class="favicon-fallback"
+                                    style="display: none"
+                                    ><i class="fas fa-link"></i
+                                ></span>
+                                {% else %}
+                                <span class="favicon-fallback"
+                                    ><i class="fas fa-link"></i
+                                ></span>
+                                {% endif %}
+                            </div>
+                            <div class="link-info">
+                                <a
+                                    href="{{ link.url }}"
+                                    target="_blank"
+                                    class="link-title"
+                                    title="{{ link.url }}"
+                                    >{{ link.title or link.url }}</a
+                                >
+                                {% if link.note %}
+                                <p class="link-note">{{ link.note }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="link-actions">
+                            <button
+                                class="icon-btn"
+                                onclick="toggleLinkEditForm('{{ link.id }}', this)"
+                                title="Edit Title"
+                            >
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                            <form
+                                method="POST"
+                                action="{{ url_for('remove_link', group_id=group_id, link_id=link.id) }}"
+                                style="display: inline"
+                                onsubmit="return confirm('Are you sure you want to remove this link?');"
+                            >
+                                <button
+                                    type="submit"
+                                    class="icon-btn icon-btn-danger"
+                                    title="Remove Link"
+                                >
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </div>
+                        <form
+                            id="edit-link-form-{{ link.id }}"
+                            class="edit-link-form-inline"
+                            method="POST"
+                            action="{{ url_for('edit_link', group_id=group_id, link_id=link.id) }}"
+                        >
+                            <label
+                                for="title-edit-{{link.id}}"
+                                class="form-label sr-only"
+                                >Edit Title:</label
+                            >
+                            <input
+                                type="text"
+                                id="title-edit-{{link.id}}"
+                                name="title"
+                                class="form-input form-input-inline"
+                                value="{{ link.title or link.url }}"
+                                required
+                            />
+                            <div class="edit-form-actions">
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary btn-small"
+                                >
+                                    Update
+                                </button>
+                                <button
+                                    type="button"
+                                    class="btn btn-secondary btn-small"
+                                    onclick="toggleLinkEditForm('{{ link.id }}', this)"
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-folder-open empty-state-icon"></i>
+                    <p class="empty-state-text">
+                        This group is looking a bit empty!
+                    </p>
+                    <p class="empty-state-cta">
+                        Add your first link using the form above.
+                    </p>
+                </div>
+                {% endif %}
             </div>
+        </main>
+
+        <div id="toast-container" class="toast-container">
+            {#{% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %} {% for category, message in messages %}
+            <div
+                class="toast toast-{{ category }} show"
+                role="alert"
+                aria-live="assertive"
+                aria-atomic="true"
+            >
+                {{ message }}
+            </div>
+            {% endfor %} {% endif %} {% endwith %}#}
+            <div
+                id="copy-toast"
+                class="toast"
+                role="alert"
+                aria-live="assertive"
+                aria-atomic="true"
+            ></div>
         </div>
 
-        <script src="static/js/group.js"></script>
+        <footer class="site-footer-bottom-group">
+            <p>
+                &copy; <span id="currentYearGroup"></span> LinkSea. All rights
+                reserved.
+            </p>
+        </footer>
+
+        <script src="{{ url_for('static', filename='js/group.js') }}"></script>
     </body>
 </html>

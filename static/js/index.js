@@ -1,57 +1,37 @@
-const codeInputs = document.querySelectorAll(".join-code-input");
-const joinForm = document.getElementById("join-group");
+// static/js/index.js
+document.addEventListener("DOMContentLoaded", () => {
+  const joinForm = document.getElementById("join-group-form");
+  const groupIdInput = document.getElementById("group_id_input");
 
-codeInputs.forEach((input, index) => {
-  input.addEventListener("input", (e) => {
-    const value = e.target.value.toUpperCase();
-    e.target.value = value;
-
-    if (value.length === 1 && index < codeInputs.length - 1) {
-      codeInputs[index + 1].focus();
-    }
-
-    // Check if all inputs have values
-    let fullCode = "";
-    codeInputs.forEach((input) => {
-      fullCode += input.value;
+  if (joinForm && groupIdInput) {
+    joinForm.addEventListener("submit", function (event) {
+      event.preventDefault(); // Prevent default form submission
+      const groupId = groupIdInput.value.trim().toUpperCase();
+      if (groupId.length === 6 && /^[A-Z0-9]{6}$/.test(groupId)) {
+        // If validation passes, redirect
+        window.location.href = `/${groupId}`;
+      } else {
+        // Basic feedback if needed, though HTML5 validation should largely cover this
+        alert(
+          "Please enter a valid 6-character Group ID (uppercase letters and numbers).",
+        );
+        groupIdInput.focus();
+      }
     });
-    if (fullCode.length === 6) {
-      submitJoinCode();
-    }
-  });
 
-  input.addEventListener("keydown", (e) => {
-    if (e.key === "Backspace" && e.target.value.length === 0 && index > 0) {
-      codeInputs[index - 1].focus();
-    }
-  });
-});
-
-joinForm.addEventListener("paste", (e) => {
-  const pasteData = (e.clipboardData || window.clipboardData).getData("text");
-  const code = pasteData.trim().substring(0, 6);
-
-  for (let i = 0; i < Math.min(code.length, codeInputs.length); i++) {
-    codeInputs[i].value = code[i];
+    // Optional: Auto-uppercase and filter input
+    groupIdInput.addEventListener("input", function () {
+      let value = this.value.toUpperCase();
+      value = value.replace(/[^A-Z0-9]/g, ""); // Remove non-alphanumeric characters
+      this.value = value.substring(0, 6); // Ensure it's not longer than 6 chars
+    });
+  } else {
+    console.error("Join form or group ID input not found.");
   }
 
-  // If 6 characters are pasted, submit the code
-  if (code.length === 6) {
-    submitJoinCode(); // Call the submitJoinCode function
+  // Set current year in footer
+  const currentYearSpan = document.getElementById("currentYear");
+  if (currentYearSpan) {
+    currentYearSpan.textContent = new Date().getFullYear();
   }
-  e.preventDefault();
-});
-
-function submitJoinCode() {
-  let fullCode = "";
-  codeInputs.forEach((input) => {
-    fullCode += input.value;
-  });
-  window.location.href = `/${fullCode}`; // Redirect directly to the group URL
-}
-
-// Prevent the default form submission (already handled by typing/pasting)
-joinForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-  // submitJoinCode();  //  Remove this line.
 });

@@ -1,11 +1,49 @@
+/* static/css/group.css */
+:root {
+    --primary-color: #007bff;
+    --primary-hover-color: #0056b3;
+    --secondary-color: #6c757d;
+    --secondary-hover-color: #545b62;
+    --danger-color: #dc3545;
+    --danger-hover-color: #b02a37;
+    --success-color: #28a745;
+    --success-hover-color: #1e7e34;
+    --background-color: #f8f9fa;
+    --card-background-color: #ffffff;
+    --text-color: #343a40;
+    --muted-text-color: #6c757d;
+    --border-color: #dee2e6;
+    --input-border-color: #ced4da;
+    --font-family: "Inter", "Cal Sans", sans-serif;
+    --border-radius: 0.375rem;
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+    --input-focus-border-color: #86b7fe;
+    --input-focus-box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    --spacing-unit: 1rem; /* Base unit for margins/paddings */
+}
+
 body {
-    font-family: "Cal Sans", sans-serif;
+    font-family: var(--font-family);
     font-weight: 400;
-    font-style: normal;
     margin: 0;
-    padding: 20px;
-    background-color: #f0f2f5;
-    color: #333;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
 }
 
 input,
@@ -14,317 +52,525 @@ label,
 textarea,
 select {
     font-family: inherit;
-    font-size: inherit; /* Optional: to also match the size */
+    font-size: 1rem;
 }
 
 .container {
-    max-width: 800px;
-    margin: auto;
-    background: #fff;
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 860px; /* Slightly wider for group page */
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
-.group-header {
-    color: #1a73e8;
-    border-bottom: 2px solid #eee;
-    padding-bottom: 10px;
+/* Group Page Header */
+.site-header-group {
+    background-color: var(--card-background-color);
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: var(--spacing-unit);
+}
+
+.header-content-group {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-    /* Add some space below the header */
 }
 
-.group-header h1 {
-    margin: 0;
+.logo-link-group {
     display: flex;
     align-items: center;
-    gap: 10px;
-}
-
-.group-header h1 .edit-icon {
-    cursor: pointer;
-    font-size: 1.1em;
-    color: #777;
-}
-
-.group-header h1 .edit-icon:hover {
-    color: #333;
-}
-
-.group-header .group-id-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.group-header .group-id {
-    font-size: 1em;
-    color: #555;
-    background-color: #f9f9f9;
-    padding: 5px 8px;
-    border-radius: 4px;
-}
-
-.group-header .copy-button {
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    text-align: center;
     text-decoration: none;
-    display: inline-block;
-    font-size: 0.9em;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
-.group-header .copy-button:hover {
-    background-color: #45a049;
+.logo-img-group {
+    height: 36px;
+    margin-right: 0.6rem;
 }
 
-h2 {
-    color: #333;
-    margin-top: 30px;
+.logo-text-group {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-color);
 }
 
-.group-info {
-    margin-bottom: 20px;
-    font-size: 0.9em;
-    color: #555;
+.back-to-home-btn {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--border-radius);
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
 }
 
-.group-info code {
-    background-color: #e8e8e8;
-    padding: 3px 6px;
-    border-radius: 4px;
-}
-
-.rename-form {
-    margin-bottom: 20px;
-    padding: 15px;
-    background-color: #f9f9f9;
-    border-radius: 6px;
-    display: none;
-    /* Initially hidden */
-    flex-direction: column;
-    /* Stack label and input */
-    gap: 10px;
-}
-
-.rename-form label {
-    font-weight: bold;
-}
-
-.rename-form input[type="text"] {
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
-    width: 100%;
-    /* Make input full width within the form */
-}
-
-.rename-form button {
-    padding: 10px 15px;
-    /* Match add link button padding */
-    background-color: #007bff;
+.back-to-home-btn:hover {
+    background-color: var(--primary-color);
     color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1em;
-    align-self: flex-start;
-    /* Align button to the start */
-    margin-top: 10px;
-    /* Add margin to top */
 }
 
-.rename-form button:hover {
-    background-color: #0056b3;
+/* Main Content Area */
+.main-content-group {
+    padding-top: var(--spacing-unit);
+    padding-bottom: calc(var(--spacing-unit) * 2);
+    flex-grow: 1;
 }
 
-.add-link-form {
-    margin-bottom: 30px;
-    padding: 15px;
-    background-color: #f9f9f9;
-    border-radius: 6px;
+/* Group Meta Header (Name, ID, Copy) */
+.group-meta-header {
+    background-color: var(--card-background-color);
+    padding: var(--spacing-unit) calc(var(--spacing-unit) * 1.5);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin-bottom: calc(var(--spacing-unit) * 0.5); /* Reduced margin */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-unit);
 }
 
-.add-link-form label {
+.group-title-section {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem; /* Space between title and edit icon */
+}
+
+.group-name-heading {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--text-color);
+    word-break: break-all; /* Prevent overflow */
+}
+
+.group-id-section {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.group-id-text {
+    font-size: 0.9rem;
+    color: var(--muted-text-color);
+    background-color: #e9ecef;
+    padding: 0.3rem 0.6rem;
+    border-radius: calc(var(--border-radius) * 0.75);
+}
+
+.last-accessed-info {
     display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+    font-size: 0.85rem;
+    color: var(--muted-text-color);
+    margin-bottom: calc(var(--spacing-unit) * 1.5);
+    padding-left: calc(var(--spacing-unit) * 1.5); /* Align with card padding */
 }
 
-.add-link-form input[type="text"],
-.add-link-form input[type="url"] {
-    width: calc(100% - 22px);
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+/* Rename Group Form */
+.rename-group-form {
+    display: none; /* Hidden by default */
+    background-color: #f0f2f5; /* Slightly different bg for emphasis */
+    padding: var(--spacing-unit);
+    border-radius: var(--border-radius);
+    margin-bottom: calc(var(--spacing-unit) * 1.5);
+    border: 1px solid var(--border-color);
+}
+.rename-group-form.active {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+.rename-form-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-start;
+}
+
+/* Add New Link Section */
+.add-link-section {
+    background-color: var(--card-background-color);
+    padding: var(--spacing-unit) calc(var(--spacing-unit) * 1.5);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin-bottom: calc(var(--spacing-unit) * 2);
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-top: 0;
+    margin-bottom: var(--spacing-unit);
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.add-link-form-content .form-row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-unit);
+    margin-bottom: var(--spacing-unit);
+}
+
+@media (min-width: 768px) {
+    .add-link-form-content .form-row {
+        flex-direction: row;
+    }
+}
+
+.form-group {
+    margin-bottom: 0; /* Handled by gap in .form-row */
+}
+.flex-grow {
+    flex-grow: 1;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.6rem 0.9rem;
+    font-size: 1rem;
+    border: 1px solid var(--input-border-color);
+    border-radius: var(--border-radius);
     box-sizing: border-box;
+    transition:
+        border-color 0.15s ease-in-out,
+        box-shadow 0.15s ease-in-out;
+}
+.form-input::placeholder {
+    color: #adb5bd;
+}
+.form-input:focus {
+    border-color: var(--input-focus-border-color);
+    outline: 0;
+    box-shadow: var(--input-focus-box-shadow);
 }
 
-.add-link-form button {
-    padding: 10px 15px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
+.add-link-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: auto; /* Fit content */
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
 }
 
-.add-link-form button:hover {
-    background-color: #218838;
+/* Links Section & Link List */
+.links-section {
+    margin-top: calc(var(--spacing-unit) * 2);
 }
 
 .link-list {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
-.link-item {
-    background: #fff;
-    border: 1px solid #e0e0e0;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 6px;
+.link-item-card {
+    background: var(--card-background-color);
+    border: 1px solid var(--border-color);
+    padding: var(--spacing-unit);
+    margin-bottom: var(--spacing-unit);
+    border-radius: var(--border-radius);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: box-shadow 0.2s ease-in-out;
+    gap: var(--spacing-unit);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition:
+        box-shadow 0.2s ease-in-out,
+        border-color 0.2s ease-in-out;
+    position: relative; /* For absolute positioned edit form if needed */
 }
 
-.link-item:hover {
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+.link-item-card:hover {
+    box-shadow: var(--box-shadow);
+    border-color: #adb5bd;
 }
 
-.link-details {
+.link-item-card.dragging {
+    opacity: 0.6;
+    background-color: #e9ecef;
+    border-style: dashed;
+}
+
+.drag-handle {
+    cursor: grab;
+    color: var(--muted-text-color);
+    padding: 0 0.5rem;
+    font-size: 1.1rem;
+    opacity: 0.7;
+}
+.link-item-card:hover .drag-handle {
+    opacity: 1;
+}
+
+.link-item-content {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 0.75rem;
+    flex-grow: 1;
+    min-width: 0; /* Prevents overflow with long link titles */
 }
 
-.link-details img {
-    width: 16px;
-    height: 16px;
+.link-favicon {
+    flex-shrink: 0;
+    width: 20px; /* Increased size */
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.favicon-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 3px;
+}
+.favicon-fallback {
+    font-size: 18px; /* Size of icon if image fails */
+    color: var(--muted-text-color);
+}
+
+.link-info {
+    flex-grow: 1;
+    min-width: 0; /* Important for text truncation */
+}
+
+.link-title {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.05rem;
+    display: block; /* For truncation */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.link-title:hover {
+    text-decoration: underline;
+    color: var(--primary-hover-color);
+}
+
+.link-note {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--muted-text-color);
+    margin-top: 0.2rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.link-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+/* Inline Edit Form for Links */
+.edit-link-form-inline {
+    display: none; /* Hidden by default */
+    flex-grow: 1; /* Take up space of link-info when visible */
+    padding: 0.5rem 0;
+    gap: 0.5rem;
+    align-items: center;
+}
+.edit-link-form-inline.active {
+    display: flex;
+}
+
+.form-input-inline {
+    flex-grow: 1;
+    margin-right: 0.5rem;
+    padding: 0.4rem 0.7rem; /* Smaller padding */
+    font-size: 0.95rem;
+}
+
+.edit-form-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex; /* For icon alignment */
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+    gap: 0.4rem; /* Space between icon and text */
+}
+.btn i {
+    line-height: 1;
+} /* Ensure icon is vertically centered */
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+.btn-primary:hover {
+    background-color: var(--primary-hover-color);
+    border-color: var(--primary-hover-color);
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+    color: white;
+    border-color: var(--secondary-color);
+}
+.btn-secondary:hover {
+    background-color: var(--secondary-hover-color);
+    border-color: var(--secondary-hover-color);
+}
+
+.btn-outline-secondary {
+    color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    background-color: transparent;
+}
+.btn-outline-secondary:hover {
+    color: white;
+    background-color: var(--secondary-color);
+}
+
+.btn-copy i {
+    margin-right: 0.3em;
+}
+
+.btn-small {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.85rem;
+}
+
+.icon-btn {
+    background-color: transparent;
+    border: none;
+    color: var(--muted-text-color);
+    padding: 0.4rem; /* Make clickable area larger */
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1rem; /* Icon size */
+    line-height: 1;
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease;
+}
+.icon-btn:hover {
+    color: var(--text-color);
+    background-color: #e9ecef;
+}
+.icon-btn-danger:hover {
+    color: var(--danger-color);
+    background-color: #fde8ea;
+}
+.icon-btn i {
     vertical-align: middle;
 }
 
-.link-details a {
-    color: #007bff;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 1.1em;
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: calc(var(--spacing-unit) * 2) var(--spacing-unit);
+    background-color: var(--card-background-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin-top: var(--spacing-unit);
+}
+.empty-state-icon {
+    font-size: 3rem;
+    color: var(--muted-text-color);
+    margin-bottom: var(--spacing-unit);
+}
+.empty-state-text {
+    font-size: 1.1rem;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+}
+.empty-state-cta {
+    font-size: 0.95rem;
+    color: var(--muted-text-color);
 }
 
-.link-details a:hover {
-    text-decoration: underline;
-}
-
-.link-details .note {
-    display: block;
-    font-size: 0.9em;
-    color: #555;
-    margin-top: 5px;
-}
-
-.link-actions button {
-    padding: 6px 10px;
-    margin-left: 5px;
-    font-size: 0.8em;
-    cursor: pointer;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #f0f0f0;
-}
-
-.link-actions button:hover {
-    background-color: #e0e0e0;
-}
-
-.no-links {
-    color: #777;
-    font-style: italic;
-}
-
-.home-link {
-    display: inline-block;
-    margin-top: 20px;
-    color: #007bff;
-    text-decoration: none;
-}
-
-.home-link:hover {
-    text-decoration: underline;
-}
-
-/* Toast styles */
-#toast-container {
+/* Toast Notifications */
+.toast-container {
     position: fixed;
-    top: 20px;
+    bottom: 20px; /* Changed from top to bottom */
     right: 20px;
-    z-index: 1000;
+    z-index: 1050; /* Ensure it's above other content */
+    display: flex;
+    flex-direction: column-reverse; /* New toasts appear on top */
+    gap: 0.5rem;
 }
 
 .toast {
-    background-color: #333;
+    background-color: var(--text-color); /* Darker for better contrast */
     color: white;
-    padding: 10px 15px;
-    border-radius: 4px;
-    margin-top: 10px;
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
     opacity: 0;
-    transition: opacity 0.5s ease-in-out;
+    transform: translateY(20px); /* Start slightly off-screen */
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+    max-width: 350px;
+    font-size: 0.95rem;
 }
 
 .toast.show {
-    opacity: 0.8;
+    opacity: 0.95; /* Slightly transparent */
+    transform: translateY(0);
+}
+/* Optional: Different toast types if you implement flashing with categories */
+.toast-success {
+    background-color: var(--success-color);
+}
+.toast-error {
+    background-color: var(--danger-color);
+}
+.toast-warning {
+    background-color: #ffc107;
+    color: var(--text-color);
+}
+.toast-info {
+    background-color: #17a2b8;
 }
 
-.link-item {
-    cursor: grab;
+/* Footer */
+.site-footer-bottom-group {
+    text-align: center;
+    padding: 1.5rem 0;
+    margin-top: auto;
+    font-size: 0.9rem;
+    color: var(--muted-text-color);
+    border-top: 1px solid var(--border-color);
+    background-color: var(--card-background-color);
 }
 
-.link-item.dragging {
-    opacity: 0.5;
-    background-color: #f0f0f0;
-}
-
-.edit-link-form {
-    display: none;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.edit-link-form label {
-    font-weight: bold;
-}
-
-.edit-link-form input[type="text"] {
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
-    width: 100%;
-}
-
-.edit-link-form button {
-    padding: 8px 12px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9em;
-}
-
-.edit-link-form button:hover {
-    background-color: #0056b3;
+/* Accessibility */
+[draggable="true"] {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
